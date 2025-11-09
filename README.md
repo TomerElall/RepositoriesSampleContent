@@ -4,7 +4,7 @@ This repository provides samples of deployable Sentinel content as well as examp
 **Please note** that this repository contains sample content that is not intended to be used as or in the place of any real security content. The sole intention of this repository is to help demonstrate the capabilities of Microsoft Sentinel Repositories.
 
 # The Sample Content Folders
-You can find a variety of supported content to use in your test deployments in the respective content folders of this repository. In addition, you can utilize the JSON or YAML to ARM scripts we've included in some folders (e.g. Detections, Hunting, and Workbooks) to convert your content files to the supported ARM format for repositories deployment. Please note that these scripts were used to convert some of the content in the [Azure Sentinel Community Repository](https://github.com/Azure/Azure-Sentinel) but have not been tested on all variations of content, please use with care.
+You can find a variety of supported content to use in your test deployments in the respective content folders of this repository. In addition, you can utilize the JSON or YAML to ARM scripts we've included in some folders (e.g. Detections, Hunting and Workbooks) to convert your content files to the supported ARM format for repositories deployment. Please note that these scripts were used to convert some of the content in the [Azure Sentinel Community Repository](https://github.com/Azure/Azure-Sentinel) but have not been tested on all variations of content, please use with care.
 
 # Scaling your CICD pipeline
 ## Sentinel Deployment Configuration
