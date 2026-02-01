@@ -12,7 +12,7 @@ $contentTypeMapping = @{
     "Parser"=@("Microsoft.OperationalInsights/workspaces/savedSearches");
     "Playbook"=@("Microsoft.Web/connections", "Microsoft.Logic/workflows", "Microsoft.Web/customApis");
     "Workbook"=@("Microsoft.Insights/workbooks");
-    "CustomDetection"=@("Microsoft.XDR/customDetections");
+    "CustomDetection"=@("Microsoft.Security/detectionRules");
 }
 $sourceControlId = $Env:sourceControlId
 $rootDirectory = $Env:rootDirectory
@@ -38,7 +38,7 @@ $sentinelResourcePatterns = @{
     "Parser" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.OperationalInsights/workspaces/$namePattern/savedSearches/$namePattern"
     "Playbook" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.Logic/workflows/$namePattern"
     "Workbook" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.Insights/workbooks/$namePattern"
-    "CustomDetection" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.XDR/customDetections/$namePattern"
+    "CustomDetection" = "Microsoft.Security/detectionRules$namePattern"
 }
 
 if ([string]::IsNullOrEmpty($contentTypes)) {
@@ -646,5 +646,6 @@ function main() {
     $fullDeploymentFlag = $modifiedConfig -or ($smartDeployment -eq "false")
     Deployment $fullDeploymentFlag $remoteShaTable $tree
 }
+
 
 main
