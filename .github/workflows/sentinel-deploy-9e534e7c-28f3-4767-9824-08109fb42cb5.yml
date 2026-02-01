@@ -26,7 +26,7 @@ jobs:
       workspaceId: 'f27bee96-0c3f-48a4-b63e-b6c95328d6bf'
       directory: '${{ github.workspace }}'
       cloudEnv: 'AzureCloud'
-      contentTypes: 'AnalyticsRule'
+      contentTypes: 'CustomDetection'
       branch: 'main'
       sourceControlId: '9e534e7c-28f3-4767-9824-08109fb42cb5'
       rootDirectory: '${{ github.workspace }}'
@@ -91,4 +91,5 @@ jobs:
       with:
         azPSVersion: 'latest'
         inlineScript: |
+
           ${{ github.workspace }}//.github/workflows/azure-sentinel-deploy-9e534e7c-28f3-4767-9824-08109fb42cb5.ps1
