@@ -539,7 +539,7 @@ function Deployment($fullDeploymentFlag, $remoteShaTable, $tree) {
 				$leafName = Split-Path $path -Leaf
 
 				if ($leafName -in @(
-				    "CD_test.bicep",
+				    "test-detectionrule.bicep",
 				    "Post_Message_Teams_azuredeploy.bicep"
 				)) {
 				    Write-Host "=== DEBUG: $leafName templateObject ==="
@@ -667,4 +667,5 @@ function main() {
 
 
 main
+
 
