@@ -536,6 +536,24 @@ function Deployment($fullDeploymentFlag, $remoteShaTable, $tree) {
             if ($path -like "*.bicep") {
                 $templateType = "Bicep"
                 $templateObject = bicep build $path --stdout | Out-String | ConvertFrom-Json
+				$leafName = Split-Path $path -Leaf
+
+				if ($leafName -in @(
+				    "CD_test.bicep",
+				    "Post_Message_Teams_azuredeploy.bicep"
+				)) {
+				    Write-Host "=== DEBUG: $leafName templateObject ==="
+				
+				    if ($null -eq $templateObject) {
+				        Write-Host "templateObject is NULL (bicep build failed)"
+				    }
+				    else {
+				        Write-Host ($templateObject | ConvertTo-Json -Depth 20)
+				    }
+				
+				    Write-Host "====================================="
+				}
+
             } else {
                 $templateType = "ARM"
                 $templateObject = Get-Content $path | Out-String | ConvertFrom-Json
@@ -649,3 +667,4 @@ function main() {
 
 
 main
+
