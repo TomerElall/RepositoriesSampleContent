@@ -330,15 +330,17 @@ function IsValidResourceType($template) {
             return $false
         }
 
-        # Normalize resources to array
-        if ($template.resources -is [System.Collections.IDictionary]) {
-            # Bicep with symbolic names / imports
-            $resources = $template.resources.Values
-			Write-Host "Version 2 format"
+        # Normalize resources into an array
+        if ($template.resources -is [System.Collections.IEnumerable] -and
+            $template.resources -isnot [System.Management.Automation.PSCustomObject]) {
+
+            # ARM classic: resources is already an array
+            $resources = $template.resources
         }
         else {
-            # ARM classic
-            $resources = $template.resources
+            # Bicep languageVersion 2.0 - resources is a dictionary
+            $resources = $template.resources.PSObject.Properties | ForEach-Object { $_.Value }
+			Write-Host "Version 2 format"
         }
 
         Write-Host "Resources count: $($resources.Count)"
@@ -349,6 +351,7 @@ function IsValidResourceType($template) {
                 return $false
             }
 
+            # Normalize type (strip apiVersion)
             $normalizedType = $r.type.ToLower().Split("@")[0]
 
             if (-not ($resourceTypes -contains $normalizedType)) {
@@ -696,6 +699,7 @@ function main() {
 
 
 main
+
 
 
 
