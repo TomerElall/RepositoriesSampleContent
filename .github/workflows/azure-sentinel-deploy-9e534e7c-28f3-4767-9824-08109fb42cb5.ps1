@@ -334,6 +334,7 @@ function IsValidResourceType($template) {
         if ($template.resources -is [System.Collections.IDictionary]) {
             # Bicep with symbolic names / imports
             $resources = $template.resources.Values
+			Write-Host "Version 2 format"
         }
         else {
             # ARM classic
@@ -695,6 +696,7 @@ function main() {
 
 
 main
+
 
 
 
