@@ -325,17 +325,45 @@ function IsRetryable($deploymentName) {
 
 function IsValidResourceType($template) {
     try {
-        $isAllowedResources = $true
-        $template.resources | ForEach-Object {
-            $isAllowedResources = $resourceTypes.contains($_.type.ToLower()) -and $isAllowedResources
+        if ($null -eq $template -or $null -eq $template.resources) {
+            Write-Host "[Error] Template or resources is null"
+            return $false
         }
+
+        # Normalize resources to array
+        if ($template.resources -is [System.Collections.IDictionary]) {
+            # Bicep with symbolic names / imports
+            $resources = $template.resources.Values
+        }
+        else {
+            # ARM classic
+            $resources = $template.resources
+        }
+
+        Write-Host "Resources count: $($resources.Count)"
+
+        foreach ($r in $resources) {
+            if ($null -eq $r.type) {
+                Write-Host "[Warning] Resource without type detected"
+                return $false
+            }
+
+            $normalizedType = $r.type.ToLower().Split("@")[0]
+
+            if (-not ($resourceTypes -contains $normalizedType)) {
+                Write-Host "Resource type '$normalizedType' is not allowed"
+                return $false
+            }
+        }
+
+        return $true
     }
     catch {
         Write-Host "[Error] Failed to check valid resource type."
-        $isAllowedResources = $false
+        return $false
     }
-    return $isAllowedResources
 }
+
 
 function DoesContainWorkspaceParam($templateObject) {
     $templateObject.parameters.PSobject.Properties.Name -contains "workspace"
@@ -667,5 +695,6 @@ function main() {
 
 
 main
+
 
 
