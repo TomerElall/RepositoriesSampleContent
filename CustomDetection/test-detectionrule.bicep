@@ -47,7 +47,7 @@ resource detectionRule 'Microsoft.Security/detectionRules@2026-01-01-preview' = 
   }
 }
 
-resource detectionRule 'Microsoft.Security/detectionRules@2026-01-01-preview' = {
+resource detectionRule2 'Microsoft.Security/detectionRules@2026-01-01-preview' = {
   displayName: 'test bicep detection rule 2'
   isEnabled: true
   queryCondition: {
