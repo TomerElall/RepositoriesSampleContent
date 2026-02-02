@@ -38,7 +38,6 @@ $sentinelResourcePatterns = @{
     "Parser" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.OperationalInsights/workspaces/$namePattern/savedSearches/$namePattern"
     "Playbook" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.Logic/workflows/$namePattern"
     "Workbook" = "/subscriptions/$guidPattern/resourceGroups/$namePattern/providers/Microsoft.Insights/workbooks/$namePattern"
-    "CustomDetection" = "Microsoft.Security/detectionRules$namePattern"
 }
 
 if ([string]::IsNullOrEmpty($contentTypes)) {
@@ -688,6 +687,7 @@ function main() {
 
 
 main
+
 
 
 
