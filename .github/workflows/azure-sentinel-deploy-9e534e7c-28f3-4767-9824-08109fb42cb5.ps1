@@ -334,7 +334,9 @@ function IsValidResourceType($template) {
                 return $false
             }
 
-            if (-not $resourceTypes.Contains($r.type.ToLower())) {
+			$normalizedType = $r.type.ToLower().Split("@")[0]
+            if (-not $resourceTypes.Contains($normalizedType)) {
+				Write-Host "Resource type '$normalizedType' was not selected for this connection - skipping"
                 return $false
             }
         }
@@ -686,6 +688,7 @@ function main() {
 
 
 main
+
 
 
 
