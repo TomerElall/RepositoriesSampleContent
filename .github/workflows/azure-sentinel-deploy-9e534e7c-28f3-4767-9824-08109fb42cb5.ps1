@@ -325,37 +325,16 @@ function IsRetryable($deploymentName) {
 
 function IsValidResourceType($template) {
     try {
-        if ($null -eq $template -or $null -eq $template.resources) {
-            Write-Host "[Error] Template or resources is null"
-            return $false
-        }
-
-        # Normalize resources into an array
-        if ($template.resources -is [System.Collections.IEnumerable] -and
-            $template.resources -isnot [System.Management.Automation.PSCustomObject]) {
-
-            # ARM classic: resources is already an array
-            $resources = $template.resources
-        }
-        else {
-            # Bicep languageVersion 2.0 - resources is a dictionary
-            $resources = $template.resources.PSObject.Properties | ForEach-Object { $_.Value }
-			Write-Host "Version 2 format"
-        }
-
+        $resources = Get-NormalizedResources $template
         Write-Host "Resources count: $($resources.Count)"
 
         foreach ($r in $resources) {
-            if ($null -eq $r.type) {
+            if (-not $r.type) {
                 Write-Host "[Warning] Resource without type detected"
                 return $false
             }
 
-            # Normalize type (strip apiVersion)
-            $normalizedType = $r.type.ToLower().Split("@")[0]
-
-            if (-not ($resourceTypes -contains $normalizedType)) {
-                Write-Host "Resource type '$normalizedType' is not allowed"
+            if (-not $resourceTypes.Contains($r.type.ToLower())) {
                 return $false
             }
         }
@@ -368,6 +347,14 @@ function IsValidResourceType($template) {
     }
 }
 
+function Get-NormalizedResources($template) {
+    if ($template.languageVersion -eq "2.0") {
+        return $template.resources.PSObject.Properties.Value
+    }
+    else {
+        return $template.resources
+    }
+}
 
 function DoesContainWorkspaceParam($templateObject) {
     $templateObject.parameters.PSobject.Properties.Name -contains "workspace"
@@ -699,6 +686,7 @@ function main() {
 
 
 main
+
 
 
 
