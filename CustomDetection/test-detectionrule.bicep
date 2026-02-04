@@ -13,7 +13,7 @@ resource detectionRule 'Microsoft.Security/detectionRules@2026-01-01-preview' = 
   }
   detectionAction: {
     alertTemplate: {
-      title: 'test bicep detection rule'
+      title: 'test bicep detection rule '
       description: 'test bicep detection rule'
       severity: 'medium'
       category: 'Exfiltration'
