@@ -37,21 +37,21 @@ jobs:
       id-token: write # Require write permission to Fetch an OIDC token.
 
     steps:
-    - name: Login to Azure (Attempt 1)
-      continue-on-error: true
-      id: login1
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_SENTINEL_CLIENTID_58d51aca85964d2cbf3a0cfd90456613 }}
-        tenant-id: ${{ secrets.AZURE_SENTINEL_TENANTID_58d51aca85964d2cbf3a0cfd90456613 }}
-        subscription-id: ${{ secrets.AZURE_SENTINEL_SUBSCRIPTIONID_9e534e7c28f34767982408109fb42cb5 }}
-        environment: 'AzurePPE'
-        audience: api://AzureADTokenExchange
-        enable-AzPSSession: true
+    # - name: Login to Azure (Attempt 1)
+    #   continue-on-error: true
+    #   id: login1
+    #   uses: azure/login@v2
+    #   with:
+    #     client-id: ${{ secrets.AZURE_SENTINEL_CLIENTID_58d51aca85964d2cbf3a0cfd90456613 }}
+    #     tenant-id: ${{ secrets.AZURE_SENTINEL_TENANTID_58d51aca85964d2cbf3a0cfd90456613 }}
+    #     subscription-id: ${{ secrets.AZURE_SENTINEL_SUBSCRIPTIONID_9e534e7c28f34767982408109fb42cb5 }}
+    #     environment: 'AzurePPE'
+    #     audience: api://AzureADTokenExchange
+    #     enable-AzPSSession: true
     
-    - name: Wait 30 seconds if login attempt 1 failed
-      if: ${{ steps.login1.outcome=='failure' }}
-      run: powershell Start-Sleep -s 30
+    # - name: Wait 30 seconds if login attempt 1 failed
+    #   if: ${{ steps.login1.outcome=='failure' }}
+    #   run: powershell Start-Sleep -s 30
 
     - name: Login to Azure (Attempt 2)
       continue-on-error: true
@@ -76,6 +76,9 @@ jobs:
           }
           $IdToken = (Invoke-RestMethod @oidcTokenParams).value
           Connect-AzAccount -ServicePrincipal -Tenant ${{ secrets.AZURE_SENTINEL_TENANTID_58d51aca85964d2cbf3a0cfd90456613 }} -Subscription ${{ secrets.AZURE_SENTINEL_SUBSCRIPTIONID_58d51aca85964d2cbf3a0cfd90456613 }} -ApplicationId ${{ secrets.AZURE_SENTINEL_CLIENTID_58d51aca85964d2cbf3a0cfd90456613 }} -Environment AzurePPE -FederatedToken $IdToken | out-null;
+          $context = Get-AzContext
+          Write-Host "Connected Subscription Id: $($context.Subscription.Id)"
+          Write-Host "Connected Subscription Name: $($context.Subscription.Name)"
 
     - name: Wait 30 seconds if login attempt 2 failed
       if: ${{ steps.login2.outcome=='failure' }}
@@ -114,3 +117,4 @@ jobs:
         azPSVersion: 'latest'
         inlineScript: |
           ${{ github.workspace }}//.github/workflows/azure-sentinel-deploy-58d51aca-8596-4d2c-bf3a-0cfd90456613.ps1
+
