@@ -17,7 +17,7 @@ resource detectionRule 'Microsoft.Security/detectionRules@2026-01-01-preview' = 
       description: 'test bicep detection rule'
       severity: 'medium'
       category: 'Exfiltration'
-      recommendedActions: 'test bicep detection rule'
+      recommendedActions: 'test bicep detection rule '
       mitreTechniques: []
       impactedAssets: [
         {
